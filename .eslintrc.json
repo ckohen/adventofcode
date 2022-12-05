@@ -1,0 +1,15 @@
+{
+	"root": true,
+	"extends": "marine/prettier/index",
+	"parserOptions": {
+		"project": "./tsconfig.eslint.json"
+	},
+	"overrides": [
+		{
+			"files": ["src/middleware.ts"],
+			"parserOptions": {
+				"project": "./tsconfig.middleware.json"
+			}
+		}
+	]
+}
