@@ -4,12 +4,12 @@ const input = readFileSync('inputs/datastream.txt').toString();
 
 const charCount = 14;
 const lastChars: string[] = [...input.slice(0, charCount)];
-let lastIndex = charCount - 1;
+let startOfStream = charCount;
 
-for (lastIndex; lastIndex < input.length; lastIndex++) {
+for (startOfStream; startOfStream < input.length; startOfStream++) {
 	if (new Set(lastChars).size === charCount) break;
 	lastChars.shift();
-	lastChars.push(input[lastIndex + 1]!);
+	lastChars.push(input[startOfStream]!);
 }
 
-console.log(lastIndex + 1);
+console.log(startOfStream);
