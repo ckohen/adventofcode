@@ -41,5 +41,5 @@
 		"target": "ESNext",
 		"useDefineForClassFields": true
 	},
-	"include": ["src/**/*.ts", "archive/index copy.ts"]
+	"include": ["src/**/*.ts"]
 }
