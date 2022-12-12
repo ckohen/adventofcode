@@ -1,83 +1,118 @@
-import { readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
+import { inspect } from 'util';
 
-const input = readFileSync('inputs/monkeyNotes.txt').toString();
-const monkeyLines = input.split('\n\n').map((monkey) => monkey.split('\n'));
+const input = readFileSync('inputs/heightmap.txt').toString();
+const lines = input.split('\n');
 
-interface Monkey {
-	items: number[];
-	operation: (old: number) => number;
-	test: (value: number) => boolean;
-	trueResult: number;
-	falseResult: number;
-	inspected: number;
+const map = lines.map((line) => [...line]);
+
+const bestSignalInd = 'E';
+const currentPosInd = 'S';
+
+const allowedDiff = 1;
+
+const startRow = map.findIndex((row) => row.includes(currentPosInd));
+const startCol = map[startRow]!.findIndex((col) => col === currentPosInd);
+
+const enum Direction {
+	Left,
+	Right,
+	Up,
+	Down,
 }
 
-const monkeys: Monkey[] = [];
+interface Coordinate {
+	x: number;
+	y: number;
+}
 
-let productOfDivisibilities = 1;
+interface Path {
+	leftPath: Path | null;
+	rightPath: Path | null;
+	upPath: Path | null;
+	downPath: Path | null;
+	current: Coordinate & { value: string };
+	visited: string[];
+	reachedEnd: boolean;
+}
 
-for (const monkey of monkeyLines) {
-	const [, startingLine, operationLine, testLine, trueLine, falseLine] = monkey;
-	if (!startingLine || !operationLine || !testLine || !trueLine || !falseLine) throw new Error('Input Parsing error');
-	const items = startingLine
-		.split(':')[1]!
-		.trim()
-		.split(',')
-		.map((item) => parseInt(item.trim(), 10));
-	const operationRaw = operationLine.split('=')[1]!.trim();
-	const [rawFirstOperand, operant, rawSecondOperand] = operationRaw.split(' ');
-	if (!rawFirstOperand || !operant || !rawSecondOperand) throw new Error('Input Parsing error');
-	const operation: Monkey['operation'] = (old) => {
-		const firstOperand = rawFirstOperand === 'old' ? old : parseInt(rawFirstOperand, 10);
-		const secondoperand = rawSecondOperand === 'old' ? old : parseInt(rawSecondOperand, 10);
-		switch (operant) {
-			case '*':
-				return firstOperand * secondoperand;
-			case '+':
-				return firstOperand + secondoperand;
+const pathsFrom: Map<string, Path> = new Map();
+
+function evaluateNext(nextX: number, nextY: number, path: Path): Path | null {
+	if (path.visited.includes(`${nextX},${nextY}`)) return null;
+	let nextPath = pathsFrom.get(`${nextX},${nextY}`);
+	if (nextPath) return nextPath;
+	const next = map[nextY]![nextX]!;
+	if (next === bestSignalInd) {
+		if ('z'.charCodeAt(0) > path.current.value.charCodeAt(0) + allowedDiff) {
+			path.reachedEnd = true;
+			return null;
 		}
-		return -1;
-	};
-	const testValue = parseInt(testLine.split(' ').reverse()[0]!, 10);
-	productOfDivisibilities *= testValue;
-	const test: Monkey['test'] = (value) => value % testValue === 0;
-	const trueResult = parseInt(trueLine.trim().split(' ').reverse()[0]!, 10);
-	const falseResult = parseInt(falseLine.trim().split(' ').reverse()[0]!, 10);
-	monkeys.push({ items, operation, test, trueResult, falseResult, inspected: 0 });
-}
-
-function relief(old: number) {
-	return old % productOfDivisibilities;
-}
-
-function executeRound() {
-	for (const monkey of monkeys) {
-		for (const item of monkey.items) {
-			const newWorry = relief(monkey.operation(item));
-			let target = -1;
-			if (monkey.test(newWorry)) {
-				target = monkey.trueResult;
-			} else {
-				target = monkey.falseResult;
-			}
-			const newMonkey = monkeys[target];
-			if (!newMonkey) throw new Error('Monkey not exist');
-			newMonkey.items.push(newWorry);
-		}
-		monkey.inspected += monkey.items.length;
-		monkey.items = [];
 	}
+	if (next.charCodeAt(0) > path.current.value.charCodeAt(0) + allowedDiff) return null;
+	// eslint-disable-next-line @typescript-eslint/no-use-before-define
+	nextPath = getNextPath({
+		leftPath: null,
+		rightPath: null,
+		upPath: null,
+		downPath: null,
+		current: { value: next, x: nextX, y: nextY },
+		visited: [...path.visited, `${nextX},${nextY}`],
+		reachedEnd: false,
+	});
+	pathsFrom.set(`${nextX},${nextY}`, nextPath);
+	return nextPath;
 }
 
-const roundCount = 10_000;
+const pathLength = 1;
 
-for (let i = 0; i < roundCount; i++) {
-	executeRound();
+function getNextPath(path: Path): Path {
+	for (let i = Direction.Left; i <= Direction.Down; i++) {
+		switch (i) {
+			case Direction.Left: {
+				if (path.current.x === 0) break;
+				const nextX = path.current.x - 1;
+				const nextY = path.current.y;
+				path.leftPath = evaluateNext(nextX, nextY, path);
+				break;
+			}
+			case Direction.Right: {
+				if (path.current.x === map[path.current.y]!.length - 1) break;
+				const nextX = path.current.x + 1;
+				const nextY = path.current.y;
+				path.rightPath = evaluateNext(nextX, nextY, path);
+				break;
+			}
+			case Direction.Up: {
+				if (path.current.y === 0) break;
+				const nextX = path.current.x;
+				const nextY = path.current.y - 1;
+				path.upPath = evaluateNext(nextX, nextY, path);
+				break;
+			}
+			case Direction.Down: {
+				if (path.current.y === map.length - 1) break;
+				const nextX = path.current.x;
+				const nextY = path.current.y + 1;
+				path.downPath = evaluateNext(nextX, nextY, path);
+				break;
+			}
+		}
+		if (path.reachedEnd) break;
+	}
+	return path;
 }
 
-const monkeysByInspected = [...monkeys].sort((a, b) => b.inspected - a.inspected);
+const path = getNextPath({
+	leftPath: null,
+	rightPath: null,
+	upPath: null,
+	downPath: null,
+	current: { value: 'a', x: startCol, y: startRow },
+	visited: [`${startCol},${startRow}`],
+	reachedEnd: false,
+});
 
-const monkeyBusiness = monkeysByInspected[0]!.inspected * monkeysByInspected[1]!.inspected;
-
-console.log(monkeys.map((monkey, index) => `Monkey ${index}: ${monkey.inspected}`));
-console.log(monkeyBusiness);
+console.log(path.downPath);
+writeFileSync('output.json', inspect(path, { depth: 100 }));
+console.log(pathLength);
