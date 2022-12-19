@@ -96,10 +96,7 @@ for (const blueprint of blueprints) {
 				path.robots.obsidian,
 				path.robots.geode,
 			].join(',');
-			if (visited.has(visitedString)) {
-				// newPaths.push(path);
-				continue;
-			}
+			if (visited.has(visitedString)) continue;
 			visited.add(visitedString);
 			const addedOre = path.ore >= blueprint.ore;
 			const addedClay = path.ore >= blueprint.clay.ore;
