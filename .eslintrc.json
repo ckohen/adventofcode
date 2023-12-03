@@ -1,15 +1,8 @@
 {
 	"root": true,
-	"extends": "marine/prettier/index",
+	"extends": ["neon/common", "neon/node", "neon/typscript", "neon/prettier"],
 	"parserOptions": {
 		"project": "./tsconfig.eslint.json"
 	},
-	"overrides": [
-		{
-			"files": ["src/middleware.ts"],
-			"parserOptions": {
-				"project": "./tsconfig.middleware.json"
-			}
-		}
-	]
+	"ignorePatterns": ["**/dist/*"]
 }

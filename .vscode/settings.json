@@ -1,5 +1,5 @@
 {
 	"code-runner.executorMap": {
-		"typescript": "yarn build:output && node $workspaceRoot"
+		"typescript": "yarn build:output && node --enable-source-maps $workspaceRoot"
 	}
 }
