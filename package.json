@@ -4,13 +4,18 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
+		"aoc": "node --enable-source-maps ./bin/dist/aoc.js",
+		"archive": "node --enable-source-maps ./bin/dist/aoc.js archive",
 		"build": "tsc",
+		"build:bin": "tsc --project tsconfig.bin.json",
 		"build:output": "yarn clean && yarn build",
 		"clean": "rimraf dist",
+		"clean:bin": "rimraf bin/dist",
+		"inc": "node --enable-source-maps ./bin/dist/aoc.js increment",
 		"lint": "prettier --check . && eslint api --ext ts && tsc --noEmit",
 		"format": "prettier --write . && eslint api --ext ts --fix",
 		"fmt": "yarn format",
-		"test": "yarn build:output && node ."
+		"test": "yarn build:output && node --enable-source-maps ."
 	},
 	"contributors": [
 		"ckohen <chaikohen@gmail.com>"
@@ -23,15 +28,20 @@
 	"bugs": {
 		"url": "https://github.com/ckohen/gh-discord-middleware/issues"
 	},
-	"main": "dist/index.js",
+	"main": "bin/dist/aoc.js",
 	"devDependencies": {
 		"@types/node": "^20.10.1",
 		"eslint": "^8.54.0",
 		"eslint-config-neon": "^0.1.57",
 		"eslint-plugin-import": "^2.29.0",
 		"prettier": "^3.1.0",
-		"rimraf": "^5.0.5",
-		"typescript": "^5.3.2"
+		"rimraf": "^5.0.5"
 	},
-	"packageManager": "yarn@4.0.2"
+	"packageManager": "yarn@4.0.2",
+	"dependencies": {
+		"@commander-js/extra-typings": "^11.1.0",
+		"commander": "^11.1.0",
+		"dotenv": "^16.3.1",
+		"typescript": "^5.3.2"
+	}
 }

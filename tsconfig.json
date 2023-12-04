@@ -1,7 +1,5 @@
 {
-	// Mapped from https://www.typescriptlang.org/tsconfig
 	"compilerOptions": {
-		// Type Checking
 		"allowUnreachableCode": false,
 		"allowUnusedLabels": false,
 		"noFallthroughCasesInSwitch": true,
@@ -13,12 +11,10 @@
 		"noUncheckedIndexedAccess": true,
 		"skipLibCheck": true,
 
-		// Modules
 		"module": "NodeNext",
 		"moduleResolution": "NodeNext",
 		"resolveJsonModule": true,
 
-		// Emit
 		"declaration": false,
 		"declarationMap": false,
 		"importHelpers": true,
@@ -33,7 +29,6 @@
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 
-		// Language and Environment
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
 		"lib": ["ESNext"],

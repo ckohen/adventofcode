@@ -222,6 +222,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@commander-js/extra-typings@npm:^11.1.0":
+  version: 11.1.0
+  resolution: "@commander-js/extra-typings@npm:11.1.0"
+  peerDependencies:
+    commander: 11.1.x
+  checksum: df00ebed009edcd2d79cf4b17d869cea614a509fd4605d4cc04c4b1bf7319eccfda79751ac43d6122d57ab1828074233e829a46367cd7b1b5da9ddc83261d72b
+  languageName: node
+  linkType: hard
+
 "@es-joy/jsdoccomment@npm:~0.41.0":
   version: 0.41.0
   resolution: "@es-joy/jsdoccomment@npm:0.41.0"
@@ -874,7 +883,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "adventofcode@workspace:."
   dependencies:
+    "@commander-js/extra-typings": "npm:^11.1.0"
     "@types/node": "npm:^20.10.1"
+    commander: "npm:^11.1.0"
+    dotenv: "npm:^16.3.1"
     eslint: "npm:^8.54.0"
     eslint-config-neon: "npm:^0.1.57"
     eslint-plugin-import: "npm:^2.29.0"
@@ -1414,6 +1426,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"commander@npm:^11.1.0":
+  version: 11.1.0
+  resolution: "commander@npm:11.1.0"
+  checksum: 13cc6ac875e48780250f723fb81c1c1178d35c5decb1abb1b628b3177af08a8554e76b2c0f29de72d69eef7c864d12613272a71fabef8047922bc622ab75a179
+  languageName: node
+  linkType: hard
+
 "comment-parser@npm:1.4.1":
   version: 1.4.1
   resolution: "comment-parser@npm:1.4.1"
@@ -1617,6 +1636,13 @@ __metadata:
   dependencies:
     esutils: "npm:^2.0.2"
   checksum: c96bdccabe9d62ab6fea9399fdff04a66e6563c1d6fb3a3a063e8d53c3bb136ba63e84250bbf63d00086a769ad53aef92d2bd483f03f837fc97b71cbee6b2520
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^16.3.1":
+  version: 16.3.1
+  resolution: "dotenv@npm:16.3.1"
+  checksum: b95ff1bbe624ead85a3cd70dbd827e8e06d5f05f716f2d0cbc476532d54c7c9469c3bc4dd93ea519f6ad711cb522c00ac9a62b6eb340d5affae8008facc3fbd7
   languageName: node
   linkType: hard
 
