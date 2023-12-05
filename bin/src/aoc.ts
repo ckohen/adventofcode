@@ -126,28 +126,41 @@ async function init(force: boolean) {
  * @param toRun - The file to run, imported as module
  * @param input - the raw input to use
  * @param part - The specific part to run (runs both when not specified)
+ * @param time - Whether to time how long it takes to obtain results
  */
-async function runCode(toRun: AOCFile, input: string, part?: '1' | '2') {
+async function runCode(toRun: AOCFile, input: string, part?: '1' | '2', time?: boolean) {
 	const splitInput = input.split('\n');
 
 	if (!part || part === '1') {
 		let result: unknown;
+		if (time) {
+			console.time('Time Taken (part 1)');
+		}
 		if (toRun.useRawInput) {
 			result = await toRun.part1(input);
 		} else {
 			result = await toRun.part1(splitInput);
 		}
 		console.log(`Part one result:\n`, result);
+		if (time) {
+			console.timeEnd('Time Taken (part 1)');
+		}
 	}
 
 	if (!part || part === '2') {
 		let result: unknown;
+		if (time) {
+			console.time('Time Taken (part 2)');
+		}
 		if (toRun.useRawInput) {
 			result = await toRun.part2(input);
 		} else {
 			result = await toRun.part2(splitInput);
 		}
 		console.log(`Part two result:\n`, result);
+		if (time) {
+			console.timeEnd('Time Taken (part 2)');
+		}
 	}
 }
 
@@ -206,6 +219,7 @@ const partOption = new Option('-p, --part <part>', 'the part to run (runs both i
 ] as const);
 const sampleOption = new Option('-s, --sample', 'runs with sample data');
 const buildOption = new Option('-b, --build', 'rebuilds the dist output before running');
+const timeOption = new Option('-t, --time', 'times how long it takes to run each part');
 
 command
 	.command('run', { isDefault: true })
@@ -213,6 +227,7 @@ command
 	.addOption(partOption)
 	.addOption(sampleOption)
 	.addOption(buildOption)
+	.addOption(timeOption)
 	.action(async (options) => {
 		if (options.build) {
 			console.log('Building...');
@@ -251,7 +266,7 @@ command
 			console.error('Input appears empty, did you forget to copy data in?');
 			process.exit(1);
 		}
-		await runCode(toRun, input, options.part);
+		await runCode(toRun, input, options.part, options.time);
 	});
 
 // TODO: use typescript api to compile in place and run
@@ -261,6 +276,7 @@ command
 	.argument('<year>', 'the year of AOC to run')
 	.addOption(partOption)
 	.addOption(sampleOption)
+	.addOption(timeOption)
 	.action(async (day, year, options) => {
 		console.log('Reading archive...');
 		let rawFile: string;
@@ -316,7 +332,7 @@ command
 			console.error('Input appears empty, did you forget to copy data in?');
 			process.exit(1);
 		}
-		await runCode(toRun, input, options.part);
+		await runCode(toRun, input, options.part, options.time);
 	});
 
 command.parse();
