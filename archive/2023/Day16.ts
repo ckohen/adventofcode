@@ -7,25 +7,26 @@ const enum Direction {
 	Up,
 }
 
-function propagate(
-	map: string[],
-	row: number,
-	column: number,
-	direction: Direction,
-	visited: Map<string, Direction[]>,
-): Map<string, Direction[]> {
-	const currentChar = map[row]?.[column];
-	const visitedAccessor = `${row}.${column}`;
-	const directionsVisited = visited.get(visitedAccessor);
-	if (!currentChar || directionsVisited?.includes(direction)) {
-		return new Map();
+interface Node {
+	char: '-' | '|' | '\\' | '/' | '.';
+	visited: Direction[];
+}
+
+function parseInput(lines: string[]): Node[][] {
+	return lines.map((row) => row.split('').map((char) => ({ char: char as Node['char'], visited: [] })));
+}
+
+function propagate(map: Node[][], row: number, column: number, direction: Direction) {
+	const currentNode = map[row]?.[column];
+	if (!currentNode || currentNode.visited.includes(direction)) {
+		return;
 	}
 
-	visited.set(visitedAccessor, directionsVisited ? directionsVisited.concat(direction) : [direction]);
+	currentNode.visited.push(direction);
 
 	const toVisit: [number, number, Direction][] = [];
 
-	switch (currentChar) {
+	switch (currentNode.char) {
 		case '-': {
 			if (direction !== Direction.Left) {
 				toVisit.push([row, column + 1, Direction.Right]);
@@ -98,15 +99,21 @@ function propagate(
 	}
 
 	for (const nextVisit of toVisit) {
-		propagate(map, ...nextVisit, visited);
+		propagate(map, ...nextVisit);
 	}
+}
 
-	return visited;
+function countVisited(map: Node[][]) {
+	return map.reduce(
+		(total, currentRow) => total + currentRow.reduce((rowTotal, node) => rowTotal + (node.visited.length ? 1 : 0), 0),
+		0,
+	);
 }
 
 export async function part1(lines: string[]) {
-	const visited = await propagate(lines, 0, 0, Direction.Right, new Map());
-	return visited.size;
+	const map = parseInput(lines);
+	propagate(map, 0, 0, Direction.Right);
+	return countVisited(map);
 }
 
 export async function part2(lines: string[]) {
@@ -114,14 +121,18 @@ export async function part2(lines: string[]) {
 	const colLength = lines.length;
 	const rowLength = lines[0]!.length;
 	for (let row = 0; row < colLength; row++) {
-		const visitedL = await propagate(lines, row, 0, Direction.Right, new Map());
-		const visitedR = await propagate(lines, row, rowLength - 1, Direction.Left, new Map());
-		highestEnergy = Math.max(visitedL.size, visitedR.size, highestEnergy);
+		const map1 = parseInput(lines);
+		const map2 = parseInput(lines);
+		propagate(map1, row, 0, Direction.Right);
+		propagate(map2, row, rowLength - 1, Direction.Left);
+		highestEnergy = Math.max(countVisited(map1), countVisited(map2), highestEnergy);
 	}
 	for (let col = 0; col < rowLength; col++) {
-		const visitedTop = await propagate(lines, 0, col, Direction.Down, new Map());
-		const visitedBottom = await propagate(lines, colLength - 1, col, Direction.Up, new Map());
-		highestEnergy = Math.max(visitedTop.size, visitedBottom.size, highestEnergy);
+		const map1 = parseInput(lines);
+		const map2 = parseInput(lines);
+		propagate(map1, 0, col, Direction.Down);
+		propagate(map2, colLength - 1, col, Direction.Up);
+		highestEnergy = Math.max(countVisited(map1), countVisited(map2), highestEnergy);
 	}
 	return highestEnergy;
 }
