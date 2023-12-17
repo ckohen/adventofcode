@@ -46,7 +46,7 @@ function processNodes(map: number[][], minForward = 1, maxForward = 3) {
 			// Can't go farther than maxForward in the current direction
 			if (direction === dir && forwardCount === maxForward) continue;
 			// Can't go less than min forward in current direction
-			if (direction !== dir && forwardCount < minForward) continue;
+			if (forwardCount && direction !== dir && forwardCount < minForward) continue;
 
 			const nextRow = row + coords[0];
 			const nextCol = col + coords[1];
