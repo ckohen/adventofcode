@@ -5,7 +5,8 @@
 		"project": "./tsconfig.eslint.json"
 	},
 	"rules": {
-		"@typescript-eslint/consistent-type-definitions": [2, "interface"]
+		"@typescript-eslint/consistent-type-definitions": [2, "interface"],
+		"no-labels": ["error", { "allowLoop": true }]
 	},
 	"ignorePatterns": ["**/dist/*"]
 }
