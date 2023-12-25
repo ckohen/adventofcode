@@ -164,17 +164,6 @@ export async function part1(lines: string[]) {
 	return hailstoneCollisionsInsideBoundary(hailstones, 200_000_000_000_000, 400_000_000_000_000);
 }
 
-/**
- * x + y + z + t(xv + yv + zv) = x2 + y2 + z2 + t(x2v + y2v + z2v)
- * x + y + z + t2(xv + yv + zv) = x3 + y3 + z3 + t2(x3v + y3v + z3v)
- * x + y + z + t3(xv + yv + zv) = x4 + y4 + z4 + t3(x4v + y4v + z4v)
- *
- * x + t(xv) = x2 + t(x2v)
- * y + t(yv) = y2 + t(y2v)
- * z + t(zv) = y2 + t(z2v)
- *
- */
-
 function getPossibleVelocities(hailstone1: Hailstone, hailstone2: Hailstone, axis: 0 | 1 | 2) {
 	if (hailstone1.velocity[axis] !== hailstone2.velocity[axis]) return null;
 	const distance = hailstone2.start[axis] - hailstone1.start[axis];
