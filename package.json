@@ -12,8 +12,8 @@
 		"clean": "rimraf dist",
 		"clean:bin": "rimraf bin/dist",
 		"inc": "node --enable-source-maps ./bin/dist/aoc.js increment",
-		"lint": "prettier --check . && eslint api --ext ts && tsc --noEmit",
-		"format": "prettier --write . && eslint api --ext ts --fix",
+		"lint": "prettier --check . && eslint src --ext ts && tsc --noEmit",
+		"format": "prettier --write . && eslint src --ext ts --fix",
 		"fmt": "yarn format",
 		"test": "yarn build:output && node --enable-source-maps ."
 	},
@@ -30,18 +30,20 @@
 	},
 	"main": "bin/dist/aoc.js",
 	"devDependencies": {
-		"@types/node": "^20.10.1",
-		"eslint": "^8.54.0",
-		"eslint-config-neon": "^0.1.57",
-		"eslint-plugin-import": "^2.29.0",
-		"prettier": "^3.1.0",
-		"rimraf": "^5.0.5"
+		"@types/lodash.merge": "^4",
+		"@types/node": "^24.10.1",
+		"eslint": "^9.39.1",
+		"eslint-config-neon": "^0.2.9",
+		"eslint-plugin-import": "^2.32.0",
+		"lodash.merge": "^4.6.2",
+		"prettier": "^3.7.3",
+		"rimraf": "^6.1.2"
 	},
-	"packageManager": "yarn@4.0.2",
+	"packageManager": "yarn@4.12.0",
 	"dependencies": {
-		"@commander-js/extra-typings": "^11.1.0",
-		"commander": "^11.1.0",
-		"dotenv": "^16.3.1",
-		"typescript": "^5.3.2"
+		"@commander-js/extra-typings": "^14.0.0",
+		"commander": "^14.0.2",
+		"dotenv": "^17.2.3",
+		"typescript": "^5.9.3"
 	}
 }
