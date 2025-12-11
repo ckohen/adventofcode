@@ -1518,6 +1518,7 @@ __metadata:
     prettier: "npm:^3.7.3"
     rimraf: "npm:^6.1.2"
     typescript: "npm:^5.9.3"
+    z3-solver: "npm:^4.15.4"
   languageName: unknown
   linkType: soft
 
@@ -1830,6 +1831,15 @@ __metadata:
   version: 1.0.0
   resolution: "async-generator-function@npm:1.0.0"
   checksum: 10c0/2c50ef856c543ad500d8d8777d347e3c1ba623b93e99c9263ecc5f965c1b12d2a140e2ab6e43c3d0b85366110696f28114649411cbcd10b452a92a2318394186
+  languageName: node
+  linkType: hard
+
+"async-mutex@npm:^0.3.2":
+  version: 0.3.2
+  resolution: "async-mutex@npm:0.3.2"
+  dependencies:
+    tslib: "npm:^2.3.1"
+  checksum: 10c0/456c6cc480f2fa5afce6e0bd375fed7fc9f3705e77545c29218b01e7283a652928d38a571c5375787a5c198ea3c6679cf0e28b0109f369545881702daec64128
   languageName: node
   linkType: hard
 
@@ -7202,7 +7212,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.4.0":
+"tslib@npm:^2.3.1, tslib@npm:^2.4.0":
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: 10c0/9c4759110a19c53f992d9aae23aac5ced636e99887b51b9e61def52611732872ff7668757d4e4c61f19691e36f4da981cd9485e869b4a7408d689f6bf1f14e62
@@ -7946,6 +7956,15 @@ __metadata:
   version: 0.1.0
   resolution: "yocto-queue@npm:0.1.0"
   checksum: 10c0/dceb44c28578b31641e13695d200d34ec4ab3966a5729814d5445b194933c096b7ced71494ce53a0e8820685d1d010df8b2422e5bf2cdea7e469d97ffbea306f
+  languageName: node
+  linkType: hard
+
+"z3-solver@npm:^4.15.4":
+  version: 4.15.4
+  resolution: "z3-solver@npm:4.15.4"
+  dependencies:
+    async-mutex: "npm:^0.3.2"
+  checksum: 10c0/4e74c39575aa5590cb680079fa0d31a055dc1a21dd1686a4c08f493f4a5cf1a25ba77c7051d94d6451f7c49f7d13eecd91b2de8409f2b558a467396cbcfcf554
   languageName: node
   linkType: hard
 

@@ -44,6 +44,7 @@
 		"@commander-js/extra-typings": "^14.0.0",
 		"commander": "^14.0.2",
 		"dotenv": "^17.2.3",
-		"typescript": "^5.9.3"
+		"typescript": "^5.9.3",
+		"z3-solver": "^4.15.4"
 	}
 }
